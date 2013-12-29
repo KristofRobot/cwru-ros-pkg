@@ -1,0 +1,26 @@
+<package>
+  <name>xv_11_laser_driver</name>
+  <version>1.0.0</version>
+  <description>
+     Neato XV-11 Laser Driver. This driver works with the laser when it is removed from the XV-11 Robot as opposed to reading scans from the Neato's USB port.
+  </description>
+  <maintainer email="krirobo@gmail.com">Kristof Robot</maintainer>
+  <license>BSD</license>
+
+  <author>Eric Perko</author>
+  <author>Chad Rockey</author>
+
+  <url>http://ros.org/wiki/xv_11_laser_driver</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>boost</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>boost</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+</package>
+
+

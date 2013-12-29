@@ -1,30 +1,24 @@
 cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+project(xv_11_laser_driver)
+find_package(catkin REQUIRED sensor_msgs roscpp)
+find_package(Boost REQUIRED COMPONENTS thread)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+catkin_package(
+  INCLUDE_DIRS include
+  LIBRARIES ${PROJECT_NAME}
+  DEPENDS Boost
+)
 
-rosbuild_init()
+include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS})
 
-#set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+add_library(${PROJECT_NAME} src/xv11_laser.cpp)
+add_executable(neato_laser_publisher src/neato_laser_publisher.cpp)
+target_link_libraries(neato_laser_publisher ${PROJECT_NAME} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 
-#uncomment if you have defined messages
-#rosbuild_genmsg()
-#uncomment if you have defined services
-#rosbuild_gensrv()
-
-#common commands for building c++ executables and libraries
-rosbuild_add_library(xv11_laser_driver src/xv11_laser.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-rosbuild_add_executable(neato_laser_publisher src/neato_laser_publisher.cpp)
-rosbuild_add_boost_directories()
-rosbuild_link_boost(neato_laser_publisher system)
-target_link_libraries(neato_laser_publisher xv11_laser_driver)
+install(TARGETS ${PROJECT_NAME}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+install(TARGETS neato_laser_publisher
+        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
